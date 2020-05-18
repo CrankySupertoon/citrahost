@@ -2,7 +2,7 @@
 
 # Made by Gabe Livengood with an hour of Googling and a fair bit of StackOverflow. Meant to help
 # me learn a bit of Bash, not for functionality, so if you want to actually use it, I'd recommend
-# either modifying it to fit your needs or making your own script from scratch.
+# modifying it to fit your needs or making your own script from scratch.
 
 # WTFPL
 
@@ -14,7 +14,7 @@
 ROOMNAME="`whoami`'s Smash Dojo"
 ROOMDESC="Come play with friends!"
 PREFGAME="Super Smash Bros. for 3DS"
-PREFGAMEID="00040000000EDF00" # Find your game ID here: http://3dsdb.com/
+PREFGAMEID="00040000000EDF00"
 PORT=24872
 MEMBERMAX=4
 PASSWRD=""
@@ -24,6 +24,11 @@ TOKEN=""
 # Check to see if the user is root so Docker can work.
 if [ "$EUID" -ne 0 ]; then
     echo "Please run as root!"
+    exit
+fi
+
+if [ -n "$TOKEN" ]; then
+    echo "You need to put your token into the TOKEN variable."
     exit
 fi
 
@@ -50,13 +55,13 @@ else
         sudo docker run -d --name citra_server \
             --publish 24872:24872/udp \
             citraemu/citra-multiplayer-dedicated \
-            --room-name ${ROOMNAME} \
-            --room-description ${ROOMDESC} \
-            --preferred-game ${PREFGAME} \
+            --room-name "$ROOMNAME" \
+            --room-description "$ROOMDESC" \
+            --preferred-game "$PREFGAME" \
             --preferred-game-id ${PREFGAMEID} \
             --port ${PORT} \
             --max_members ${MEMBERMAX} \
-            --password ${PASSWRD} \
+            --password "$PASSWRD" \
             --token ${TOKEN} \
             --enable-citra-mods \
             --web-api-url https://api.citra-emu.org/
@@ -78,9 +83,9 @@ Run this script again to stop the server."
         sudo docker run -d --name citra_server \
             --publish 24872:24872/udp \
             citraemu/citra-multiplayer-dedicated \
-            --room-name ${ROOMNAME} \
-            --room-description ${ROOMDESC} \
-            --preferred-game ${PREFGAME} \
+            --room-name "$ROOMNAME" \
+            --room-description "$ROOMDESC" \
+            --preferred-game "$PREFGAME" \
             --preferred-game-id ${PREFGAMEID} \
             --port ${PORT} \
             --max_members ${MEMBERMAX} \
