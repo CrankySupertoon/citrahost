@@ -27,11 +27,6 @@ if [ "$EUID" -ne 0 ]; then
     exit
 fi
 
-if [ -n "$TOKEN" ]; then
-    echo "You need to put your token into the TOKEN variable."
-    exit
-fi
-
 # Main script
 
 # Check to see if there is already a Citra Docker container up and running, and stop it if there is.
